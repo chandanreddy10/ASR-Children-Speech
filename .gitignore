@@ -21,3 +21,4 @@ src/benchmark/finetune_test_1.log
 src/benchmark/finetune_test.log
 src/benchmark/predictions_finetune_parakeet.json
 src/benchmark/predictions_finetune_parakeet_won.json
+src/viz_tool/asr_report.json
