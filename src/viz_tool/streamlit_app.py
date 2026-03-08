@@ -111,9 +111,10 @@ with col2:
     
     st.divider()
     
-    st.subheader("3. Comments")
+    st.subheader("3.Comments")
     # THE KEY PART: 'value' pulls from state, 'on_change' saves to state
     st.text_area(
+        "Add comments here.",
         value=sample['comments'],
         key=f"input_{st.session_state.index}",
         on_change=update_data,
