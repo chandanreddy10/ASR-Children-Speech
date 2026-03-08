@@ -111,15 +111,13 @@ with col2:
     
     st.divider()
     
-    st.subheader("3. Researcher Comments")
+    st.subheader("3. Comments")
     # THE KEY PART: 'value' pulls from state, 'on_change' saves to state
     st.text_area(
-        "Observation (e.g., 'Aspirated /s/ leading to deletion')",
         value=sample['comments'],
         key=f"input_{st.session_state.index}",
         on_change=update_data,
         height=250,
-        placeholder="Type your analysis here... (Auto-saves to memory on focus loss)"
     )
 
 # Bottom Navigation
