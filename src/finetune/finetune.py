@@ -75,7 +75,7 @@ def prepare_data(sample=None):
     df["audio_path"] = df["audio_path"].apply(
         lambda path: f"{PROJECT_ROOT}{path}"
     )
-
+    df = df.loc[df["audio_duration_sec"] <= 30].reset_index(drop=True)
     df = df[
         ["audio_path", "audio_duration_sec", "orthographic_text"]
     ].rename(
@@ -111,7 +111,7 @@ def build_config(train_manifest, val_manifest, sample=None):
 
     DEVICES = 1
     PRECISION = "bf16-mixed"
-    BATCH_SIZE = 8
+    BATCH_SIZE = 4
     NUM_WORKERS = 4
 
     yaml_path = "asr_adaptation.yaml"
@@ -153,7 +153,7 @@ def build_config(train_manifest, val_manifest, sample=None):
                 "max_steps": -1, #if sample else 10000,
                 "val_check_interval": 0.2, # if sample else 500,
                 "enable_progress_bar": True,
-                "accumulate_grad_batches":2,
+                "accumulate_grad_batches":4,
             },
             "exp_manager": {
                 "exp_dir": str(PROJECT_ROOT / "models" / "orthographic_finetune_nemo"),

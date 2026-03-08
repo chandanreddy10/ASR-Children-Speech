@@ -16,3 +16,8 @@ cookies.txt
 data_download.txt
 explore.ipynb
 talkbak_download.txt
+src/finetune/log2.log
+src/benchmark/finetune_test_1.log
+src/benchmark/finetune_test.log
+src/benchmark/predictions_finetune_parakeet.json
+src/benchmark/predictions_finetune_parakeet_won.json
