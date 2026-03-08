@@ -193,9 +193,9 @@ def evaluate_model(exp_log_dir, cfg):
     references = [e["text"] for e in val_entries]
 
     logger.info(f"Running inference on {len(audio_files)} files")
-    cleaned_audio_files = clean_audio_files(audio_files)
+    # cleaned_audio_files = clean_audio_files(audio_files)
     raw = eval_model.transcribe(
-        cleaned_audio_files,
+        audio_files,
         batch_size=cfg.model.validation_ds.batch_size,
         channel_selector="average",
         verbose=False,
