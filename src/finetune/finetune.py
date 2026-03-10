@@ -42,7 +42,7 @@ LOG_FILE ="finetune.log"
 torch.set_float32_matmul_precision("high")
 
 
-def setup_logging():
+def setup_logging(log_file=LOG_FILE):
 
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
@@ -51,7 +51,7 @@ def setup_logging():
         "%(asctime)s | %(levelname)s | %(message)s"
     )
 
-    file_handler = logging.FileHandler(LOG_FILE)
+    file_handler = logging.FileHandler(log_file)
     file_handler.setFormatter(formatter)
 
     console_handler = logging.StreamHandler(sys.stdout)
@@ -63,7 +63,7 @@ def setup_logging():
     return logger
 
 
-logger = setup_logging()
+logger = setup_logging(log_file=LOG_FILE)
 
 
 def prepare_data(sample=None):

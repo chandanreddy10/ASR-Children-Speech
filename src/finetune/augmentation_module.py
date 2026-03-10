@@ -29,9 +29,6 @@ def augment_data(sample: pd.DataFrame, output_dir: str) -> pd.DataFrame:
     Returns original + augmented dataset shuffled.
     """
 
-    output_dir = PROJECT_ROOT / Path(output_dir)
-    output_dir.mkdir(parents=True, exist_ok=True)
-
     sample["path"] = f"{PROJECT_ROOT}" + sample["audio_path"]
 
     augmented_data = {
