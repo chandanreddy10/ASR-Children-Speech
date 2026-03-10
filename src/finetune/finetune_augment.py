@@ -12,6 +12,10 @@ SAMPLES_DIR = DATA_OUTPUT_DIR / "sample_data"
 TRAIN_MANIFEST = MANIFEST_DIR / "train_manifest_augment.jsonl"
 TRAIN_FILE= PROJECT_ROOT / "data_files" / "train_samples.csv"
 
+for directory in [DATA_OUTPUT_DIR, MANIFEST_DIR, SAMPLES_DIR]:
+    directory.mkdir(parents=True, exist_ok=True)
+    print(f"[INFO] Created directory: {directory}")
+    
 def prepare_data( logger, DATA_FILE, sample=None):
 
     logger.info("Loading dataset...")
@@ -51,4 +55,7 @@ df = pd.read_csv(TRAIN_FILE)
 print("Spliting the Dataframes")
 file_paths = split_dataframe(df, SAMPLES_DIR)
 for file_path in file_paths:
-    print(file_path)
+    sample_df = pd.read_csv(file_path)
+    sample_df = augment_data(sample_df, "temp_files/processed/")
+    print(sample_df.shape[0])
+    break

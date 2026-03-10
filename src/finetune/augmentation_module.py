@@ -29,6 +29,7 @@ def augment_data(sample: pd.DataFrame, output_dir: str) -> pd.DataFrame:
     Returns original + augmented dataset shuffled.
     """
 
+    print(f"[INFO] Starting augmentation for {len(sample)} samples...")
     sample["path"] = f"{PROJECT_ROOT}" + sample["audio_path"]
 
     augmented_data = {
@@ -43,6 +44,7 @@ def augment_data(sample: pd.DataFrame, output_dir: str) -> pd.DataFrame:
         "orthographic_text": [],
     }
 
+    total_samples = len(sample)
     for index, row in sample.iterrows():
 
         audio_path = row["path"]
@@ -65,10 +67,11 @@ def augment_data(sample: pd.DataFrame, output_dir: str) -> pd.DataFrame:
             augmented_waveform = augment_pitch(augmented_waveform, sr)
 
         new_filename = f"{row['utterance_id']}_{augmentation_choice}.flac"
-        save_path = output_dir / new_filename
+        save_path = output_dir + new_filename
+        file_save_path = PROJECT_ROOT / f"{save_path}"
+        sf.write(file_save_path, augmented_waveform, sr)
 
-        sf.write(save_path, augmented_waveform, sr)
-
+        # append metadata
         augmented_data["utterance_id"].append(row["utterance_id"])
         augmented_data["child_id"].append(row["child_id"])
         augmented_data["session_id"].append(row["session_id"])
@@ -76,12 +79,18 @@ def augment_data(sample: pd.DataFrame, output_dir: str) -> pd.DataFrame:
         augmented_data["audio_duration_sec"].append(len(augmented_waveform) / sr)
         augmented_data["age_bucket"].append(row["age_bucket"])
         augmented_data["md5_hash"].append(row["md5_hash"])
-        augmented_data["filesize_bytes"].append(os.path.getsize(save_path))
+        augmented_data["filesize_bytes"].append(os.path.getsize(file_save_path))
         augmented_data["orthographic_text"].append(row["orthographic_text"])
 
+        # print progress every 10 samples
+        if (index + 1) % 10 == 0 or (index + 1) == total_samples:
+            print(f"[INFO] Augmented {index + 1}/{total_samples} samples")
+
+    print("[INFO] Creating augmented DataFrame...")
     augmented_df = pd.DataFrame(augmented_data)
 
     final_df = pd.concat([sample, augmented_df], axis=0)
     final_df = final_df.sample(frac=1).reset_index(drop=True)
 
+    print("[INFO] Augmentation complete. Returning final DataFrame.")
     return final_df
